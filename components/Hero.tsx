@@ -1,8 +1,11 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+
+const EEGAScene3D = dynamic(() => import('./EEGAScene3D'), { ssr: false });
 
 const MARQUEE_ITEMS = [
   'CARDIAC ARREST',
@@ -21,27 +24,35 @@ const MARQUEE_ITEMS = [
 
 export function Hero() {
   return (
-    <section className="relative min-h-screen flex flex-col overflow-hidden">
-      {/* Radar pulse rings */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="radar-ring" />
-        <div className="radar-ring" />
-        <div className="radar-ring" />
-      </div>
-
+    <section className="hero">
       {/* Header */}
-      <header className="relative z-10 flex items-center justify-between px-4 sm:px-6 lg:px-8 py-6">
-        <Link href="/" className="font-heading text-2xl sm:text-3xl tracking-widest text-emergency-red">
+      <header
+        className="relative z-10 flex items-center justify-between col-span-2 px-4 sm:px-6 lg:px-8 py-6"
+        style={{ gridColumn: '1 / -1' }}
+      >
+        <Link
+          href="/"
+          className="font-heading text-2xl sm:text-3xl tracking-widest text-emergency-red"
+        >
           ⚡ EEGA
         </Link>
         <nav className="hidden md:flex items-center gap-8 font-body text-sm text-white/80">
-          <Link href="#how-it-works" className="hover:text-electric-cyan transition-colors">
+          <Link
+            href="#how-it-works"
+            className="hover:text-electric-cyan transition-colors"
+          >
             How It Works
           </Link>
-          <Link href="#coverage" className="hover:text-electric-cyan transition-colors">
+          <Link
+            href="#coverage"
+            className="hover:text-electric-cyan transition-colors"
+          >
             Coverage
           </Link>
-          <Link href="#about" className="hover:text-electric-cyan transition-colors">
+          <Link
+            href="#about"
+            className="hover:text-electric-cyan transition-colors"
+          >
             About
           </Link>
         </nav>
@@ -53,8 +64,8 @@ export function Hero() {
         </div>
       </header>
 
-      {/* Hero content */}
-      <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 sm:px-6 text-center">
+      {/* Hero left content */}
+      <div className="hero-left">
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -69,7 +80,8 @@ export function Hero() {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="font-body text-base sm:text-lg text-white/70 max-w-2xl mt-6"
         >
-          AI-powered emergency guidance. Live location. Real-time protocols. Nearest help — instantly.
+          AI-powered emergency guidance. Live location. Real-time protocols.
+          Nearest help — instantly.
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -78,7 +90,10 @@ export function Hero() {
           className="flex flex-col sm:flex-row gap-4 mt-10"
         >
           <Link href="#emergency-input">
-            <Button size="lg" className="w-full sm:w-auto text-base px-10 py-5 animate-pulse">
+            <Button
+              size="lg"
+              className="w-full sm:w-auto text-base px-10 py-5 animate-pulse"
+            >
               🚨 GET EMERGENCY HELP
             </Button>
           </Link>
@@ -90,8 +105,13 @@ export function Hero() {
         </motion.div>
       </div>
 
+      <EEGAScene3D />
+
       {/* Marquee strip */}
-      <div className="relative z-10 w-full overflow-hidden border-t border-emergency-red/20 py-3 bg-surface/80">
+      <div
+        className="relative z-10 w-full overflow-hidden border-t border-emergency-red/20 py-3 bg-surface/80"
+        style={{ gridColumn: '1 / -1' }}
+      >
         <div className="marquee-content">
           <span className="font-heading text-sm tracking-[0.3em] text-white/60 whitespace-nowrap px-8">
             COVERING:{' '}

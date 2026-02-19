@@ -156,3 +156,324 @@ body::after {
   height: 100%;
   z-index: 1;
 }
+
+/* ── EEGA HERO 3D SCENE ANIMATIONS ── */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 42% 58%;
+  grid-template-rows: auto 1fr auto;
+  align-items: center;
+  padding: 0 1.5rem 0 3.5rem;
+  gap: 0;
+  position: relative;
+  overflow: hidden;
+}
+@media (max-width: 1024px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 0 1rem;
+  }
+  .hero-right {
+    margin-right: 0;
+  }
+}
+
+.hero-left {
+  position: relative;
+  z-index: 10;
+  padding-right: 1rem;
+}
+
+.hero-right {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 4rem;
+  margin-right: -2rem;
+}
+
+.scene-wrap {
+  position: relative;
+  width: 820px;
+  height: 700px;
+}
+
+.scene-wrap::before,
+.scene-wrap::after {
+  content: '';
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  pointer-events: none;
+  z-index: 20;
+}
+.scene-wrap::before {
+  top: 60px;
+  right: 10px;
+  border-top: 2px solid rgba(255, 45, 45, 0.6);
+  border-right: 2px solid rgba(255, 45, 45, 0.6);
+  animation: bracketPulse 2s ease-in-out infinite alternate;
+}
+.scene-wrap::after {
+  bottom: 60px;
+  left: 10px;
+  border-bottom: 2px solid rgba(255, 45, 45, 0.6);
+  border-left: 2px solid rgba(255, 45, 45, 0.6);
+  animation: bracketPulse 2s ease-in-out infinite alternate;
+}
+@keyframes bracketPulse {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.scene-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  height: 550px;
+  background: radial-gradient(
+    ellipse,
+    rgba(255, 45, 45, 0.35) 0%,
+    rgba(255, 80, 0, 0.12) 40%,
+    transparent 70%
+  );
+  filter: blur(35px);
+  animation: pulseGlow 3s ease-in-out infinite;
+  pointer-events: none;
+}
+.scene-glow-2 {
+  position: absolute;
+  top: 30%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  width: 350px;
+  height: 250px;
+  background: radial-gradient(
+    ellipse,
+    rgba(0, 245, 255, 0.12) 0%,
+    transparent 70%
+  );
+  filter: blur(25px);
+  animation: pulseGlow2 4s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes pulseGlow {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+}
+@keyframes pulseGlow2 {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+.radar-rings {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -45%);
+  width: 700px;
+  height: 700px;
+  pointer-events: none;
+}
+.ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: radarPulseScene 3s ease-out infinite;
+}
+.ring:nth-child(1) {
+  width: 200px;
+  height: 200px;
+  border-color: rgba(255, 45, 45, 0.6);
+  animation-delay: 0s;
+  border-width: 2px;
+}
+.ring:nth-child(2) {
+  width: 340px;
+  height: 340px;
+  border-color: rgba(255, 45, 45, 0.35);
+  animation-delay: 0.6s;
+}
+.ring:nth-child(3) {
+  width: 500px;
+  height: 500px;
+  border-color: rgba(255, 45, 45, 0.18);
+  animation-delay: 1.2s;
+}
+.ring:nth-child(4) {
+  width: 680px;
+  height: 680px;
+  border-color: rgba(255, 45, 45, 0.07);
+  animation-delay: 1.8s;
+}
+@keyframes radarPulseScene {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.75);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+}
+
+.iso-scene {
+  position: relative;
+  width: 820px;
+  height: 680px;
+  transform-style: preserve-3d;
+}
+
+.scene-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 40px 80px rgba(0, 0, 0, 0.9))
+    drop-shadow(0 0 60px rgba(255, 45, 45, 0.25));
+}
+
+.neon-tube {
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: tubeFlow 2s 1.5s ease-out forwards;
+}
+.neon-tube-2 {
+  stroke-dasharray: 300;
+  stroke-dashoffset: 300;
+  animation: tubeFlow 2s 1.8s ease-out forwards;
+}
+@keyframes tubeFlow {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.heartbeat-line {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  animation: heartbeat 2s 2s linear infinite;
+}
+@keyframes heartbeat {
+  0% {
+    stroke-dashoffset: 200;
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: -200;
+    opacity: 0;
+  }
+}
+
+.med-cross {
+  animation: crossPulse 1.5s ease-in-out infinite;
+  transform-origin: 255px 305px;
+}
+@keyframes crossPulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 10px rgba(255, 45, 45, 0.9))
+      drop-shadow(0 0 20px rgba(255, 45, 45, 0.5));
+  }
+  50% {
+    filter: drop-shadow(0 0 25px rgba(255, 45, 45, 1))
+      drop-shadow(0 0 50px rgba(255, 45, 45, 0.7)) brightness(1.3);
+  }
+}
+
+.gear {
+  transform-origin: 430px 225px;
+  animation: gearSpin 4s linear infinite;
+}
+@keyframes gearSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.icon-card-1 {
+  animation: iconFloat 3s 0.1s ease-in-out infinite alternate;
+}
+.icon-card-2 {
+  animation: iconFloat 3s 0.4s ease-in-out infinite alternate;
+}
+.icon-card-3 {
+  animation: iconFloat 3s 0.7s ease-in-out infinite alternate;
+}
+.icon-card-4 {
+  animation: iconFloat 3s 1s ease-in-out infinite alternate;
+}
+@keyframes iconFloat {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-6px);
+  }
+}
+
+.light-beam {
+  animation: beamPulse 2.5s ease-in-out infinite;
+}
+@keyframes beamPulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.particle {
+  animation: particleDrift 3s ease-in-out infinite alternate;
+}
+@keyframes particleDrift {
+  from {
+    transform: translateY(0) translateX(0);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateY(-15px) translateX(8px);
+    opacity: 1;
+  }
+}
+
+.data-line {
+  stroke-dasharray: 8 4;
+  animation: dataDash 1s linear infinite;
+}
+@keyframes dataDash {
+  to {
+    stroke-dashoffset: -12;
+  }
+}
