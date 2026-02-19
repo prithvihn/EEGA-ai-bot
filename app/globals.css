@@ -1,0 +1,158 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #0A0A0B;
+    --surface: #111114;
+    --emergency-red: #FF2D2D;
+    --electric-cyan: #00F5FF;
+    --font-heading: 'Bebas Neue', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply antialiased;
+    background: var(--background);
+    color: rgba(255, 255, 255, 0.92);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+  }
+}
+
+/* Scanline overlay */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 45, 45, 0.03) 2px,
+    rgba(255, 45, 45, 0.03) 4px
+  );
+}
+
+/* Noise texture via SVG filter */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* Grid lines background */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(255, 45, 45, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 45, 45, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Glassmorphism panel */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 45, 45, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.glass-panel:hover {
+  border-color: rgba(255, 45, 45, 0.4);
+  box-shadow: 0 0 20px rgba(255, 45, 45, 0.1);
+}
+
+/* Radar pulse animation */
+@keyframes radarRing {
+  0% {
+    transform: scale(0.3);
+    opacity: 0.8;
+    border-color: rgba(0, 245, 255, 0.6);
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+    border-color: rgba(0, 245, 255, 0);
+  }
+}
+
+.radar-ring {
+  position: absolute;
+  border: 2px solid rgba(0, 245, 255, 0.5);
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  animation: radarRing 2.5s ease-out infinite;
+}
+
+.radar-ring:nth-child(2) {
+  animation-delay: 0.6s;
+}
+
+.radar-ring:nth-child(3) {
+  animation-delay: 1.2s;
+}
+
+/* Blinking dot */
+@keyframes blinkDot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.blink-dot {
+  animation: blinkDot 1s ease-in-out infinite;
+}
+
+/* Soundwave bars */
+@keyframes soundwave {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
+
+.soundwave-bar {
+  transform-origin: bottom;
+  animation: soundwave 0.6s ease-in-out infinite;
+}
+
+/* Marquee scroll */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee-content {
+  display: flex;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+}
+
+.marquee-content:hover {
+  animation-play-state: paused;
+}
+
+/* Leaflet map fix for Next.js */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
