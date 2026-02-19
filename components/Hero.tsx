@@ -72,7 +72,7 @@ export function Hero() {
           transition={{ duration: 0.6 }}
           className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl tracking-[0.2em] text-white leading-tight max-w-5xl"
         >
-          WHEN SECONDS MATTER,<br />EEGA RESPONDS
+          WHEN SECONDS <span className="text-emergency-red font-semibold">MATTER</span>,<br />EEGA RESPONDS
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
