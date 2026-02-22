@@ -8,6 +8,8 @@ import { Button } from '@/components/ui/button';
 import { MapView } from './MapView';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import ReactMarkdownBase from 'react-markdown';
+const ReactMarkdown = ReactMarkdownBase as any;
 
 function GuidanceSkeleton() {
   return (
@@ -73,11 +75,15 @@ export function ResultsPanel() {
             </div>
 
             <div className="glass-panel rounded-lg p-6">
-              <div
-                className="font-body text-sm sm:text-base text-white/90 leading-relaxed"
-                style={{ whiteSpace: 'pre-wrap' }}
-              >
-                {guidance}
+              <div className="prose prose-invert prose-sm max-w-none
+                              prose-p:text-gray-200
+                              prose-strong:text-white prose-strong:font-bold
+                              prose-headings:text-white prose-headings:font-heading
+                              prose-ol:text-gray-200
+                              prose-ul:text-gray-200
+                              prose-li:text-gray-200
+                              prose-li:my-1">
+                <ReactMarkdown>{guidance}</ReactMarkdown>
               </div>
             </div>
 
