@@ -2,6 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import type { NearbyCenter } from '@/lib/mockData';
+import type { Hospital } from '@/lib/api';
 
 const MapInner = dynamic(
   () => import('./MapViewInner').then((mod) => mod.MapViewInner),
@@ -17,9 +18,18 @@ const MapInner = dynamic(
 
 interface MapViewProps {
   center: [number, number];
-  markers: NearbyCenter[];
+  markers?: NearbyCenter[];
+  userLocation?: [number, number];
+  hospitals?: Hospital[];
 }
 
-export function MapView({ center, markers }: MapViewProps) {
-  return <MapInner center={center} markers={markers} />;
+export function MapView({ center, markers, userLocation, hospitals }: MapViewProps) {
+  return (
+    <MapInner
+      center={center}
+      markers={markers || []}
+      userLocation={userLocation}
+      hospitals={hospitals}
+    />
+  );
 }

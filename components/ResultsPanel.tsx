@@ -9,6 +9,7 @@ import { MapView } from './MapView';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import ReactMarkdownBase from 'react-markdown';
+import { getNearbyHospitals, type Hospital } from '@/lib/api';
 const ReactMarkdown = ReactMarkdownBase as any;
 
 function GuidanceSkeleton() {
@@ -33,16 +34,53 @@ function GuidanceSkeleton() {
   );
 }
 
+function HospitalsSkeleton() {
+  return (
+    <div className="space-y-3 animate-pulse">
+      {[1, 2, 3].map((i) => (
+        <div key={i} className="glass-panel rounded p-3">
+          <div className="h-4 bg-white/10 rounded w-3/5 mb-2" />
+          <div className="h-3 bg-white/10 rounded w-2/5" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function ResultsPanel() {
-  const { hasResult, mockResult, guidance, isLoading } = useEmergencyStore();
+  const { hasResult, mockResult, guidance, isLoading, location } = useEmergencyStore();
+  const { showToast } = useToast();
+  const [expandedStep, setExpandedStep] = useState<number | null>(0);
+
+  // Nearby hospitals state
+  const [hospitals, setHospitals] = useState<Hospital[]>([]);
+  const [hospitalsLoading, setHospitalsLoading] = useState(false);
+  const [hospitalsError, setHospitalsError] = useState<string | null>(null);
 
   useEffect(() => {
     if (hasResult) {
       document.getElementById('results-panel')?.scrollIntoView({ behavior: 'smooth' });
     }
   }, [hasResult]);
-  const { showToast } = useToast();
-  const [expandedStep, setExpandedStep] = useState<number | null>(0);
+
+  // Fetch nearby hospitals when AI guidance is displayed
+  useEffect(() => {
+    if (hasResult && guidance && location) {
+      setHospitalsLoading(true);
+      setHospitalsError(null);
+      getNearbyHospitals(location.lat, location.lng)
+        .then((data) => {
+          setHospitals(data);
+          setHospitalsLoading(false);
+        })
+        .catch((err) => {
+          setHospitalsError(err.message || 'Failed to fetch nearby hospitals.');
+          setHospitalsLoading(false);
+        });
+    } else {
+      setHospitals([]);
+    }
+  }, [hasResult, guidance, location]);
 
   // Show loading skeleton
   if (isLoading) {
@@ -111,6 +149,92 @@ export function ResultsPanel() {
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* ── NEARBY HOSPITALS ─────────────────────────────────── */}
+            <div className="mt-8">
+              <div className="glass-panel rounded-lg p-4 border-emergency-red/40 mb-4">
+                <span className="font-heading text-lg tracking-wider text-emergency-red">
+                  🏥 NEARBY HOSPITALS
+                </span>
+              </div>
+
+              {hospitalsLoading && <HospitalsSkeleton />}
+
+              {hospitalsError && (
+                <div className="glass-panel rounded-lg p-4 text-center">
+                  <p className="font-body text-sm text-red-400">{hospitalsError}</p>
+                </div>
+              )}
+
+              {!hospitalsLoading && !hospitalsError && hospitals.length === 0 && (
+                <div className="glass-panel rounded-lg p-4 text-center">
+                  <p className="font-body text-sm text-white/50">
+                    No hospitals found nearby. Make sure location access is enabled.
+                  </p>
+                </div>
+              )}
+
+              {!hospitalsLoading && hospitals.length > 0 && (
+                <>
+                  {/* Map */}
+                  <div className="glass-panel rounded-lg overflow-hidden h-[280px] sm:h-[320px] mb-4">
+                    <MapView
+                      center={
+                        location
+                          ? [location.lat, location.lng]
+                          : [hospitals[0].lat, hospitals[0].lon]
+                      }
+                      userLocation={
+                        location ? [location.lat, location.lng] : undefined
+                      }
+                      hospitals={hospitals}
+                    />
+                  </div>
+
+                  {/* Hospital Cards */}
+                  <div className="space-y-2">
+                    {hospitals.map((h) => (
+                      <motion.div
+                        key={`${h.name}-${h.lat}-${h.lon}`}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="glass-panel rounded p-3 flex justify-between items-center hover:border-emergency-red/30 transition-colors"
+                      >
+                        <div className="min-w-0 flex-1">
+                          <p className="font-body text-sm text-white font-medium truncate">
+                            {h.name}
+                          </p>
+                          <div className="flex items-center gap-3 mt-1 flex-wrap">
+                            <span className="font-body text-xs text-white/50">
+                              📍 {h.distance_km} km
+                            </span>
+                            {h.phone && (
+                              <a
+                                href={`tel:${h.phone}`}
+                                className="font-body text-xs text-electric-cyan hover:underline"
+                              >
+                                📞 {h.phone}
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                        <a
+                          href={`https://www.openstreetmap.org/?mlat=${h.lat}&mlon=${h.lon}#map=16/${h.lat}/${h.lon}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="ml-3 shrink-0 px-3 py-1.5 rounded text-xs font-heading tracking-wider
+                                     bg-emergency-red/20 text-emergency-red border border-emergency-red/30
+                                     hover:bg-emergency-red/30 transition-colors"
+                        >
+                          Open in Maps
+                        </a>
+                      </motion.div>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
 
             <p className="mt-4 font-body text-xs text-white/50">
