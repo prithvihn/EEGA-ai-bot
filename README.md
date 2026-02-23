@@ -113,20 +113,35 @@ EEGA (Extreme Emergency Guidance Assistant) is an **AI-powered emergency respons
 ### 🤖 AI Guidance — Snake Bite
 ![Snake Bite AI Response](./assets/snake-bite-ai.png)
 
+### 🏥 Nearby Hospitals
+![Nearby Hospitals](./assets/near-by-hospitals.png)
+
 ### 🐍 Emergency Example
 ![Snake Bite Example](./assets/snake-bite-ex.png)
 
 ### ⚡ Electric Shock Example
 ![Electric Shock](./assets/electric-shock-ex.png)
 
-### 🏥 Nearby Hospitals
-![Nearby Hospitals](./assets/near-by-hospitals.png)
-
 ### 📋 Scenario Grid
 ![Scenario Grid](./assets/scenario-grid.png)
 
 ### ℹ️ How It Works
-![How It Works](./assets/how-it-works.png)
+<div align="center">
+
+| Step | Action |
+|------|--------|
+| **01** | User opens EEGA → Browser requests location permission → Live GPS coordinates captured |
+| **02** | User types or speaks the emergency — e.g. *"fire in building"*, *"snake bite"*, *"heart attack"* |
+| **03** | FastAPI backend receives input → AI classifies the emergency type and severity |
+| **04** | Emergency type detected → Relevant first-aid protocol retrieved and structured |
+| **05** | Overpass API called with coordinates → Nearest hospitals and help centers located |
+| **06** | Shortest route to nearest help center calculated |
+| **07** | Structured response assembled → Emergency type + Immediate steps + Nearby centers + Numbers |
+| **08** | Response sent to frontend → Map renders with markers + Guidance displayed in UI |
+| **09** | *(Optional)* SMS auto-sent to emergency contacts with location and emergency type |
+
+</div>
+
 
 ---
 
