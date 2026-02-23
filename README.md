@@ -107,10 +107,7 @@ EEGA (Extreme Emergency Guidance Assistant) is an **AI-powered emergency respons
 ### 🏠 Landing Page
 ![Landing Page](./assets/landing-page.png)
 
-### 🆘 Emergency Input
-![Emergency Input](./assets/emergency-input-output.png)
-
-### 🤖 AI Guidance — Snake Bite
+### 🤖 AI Guidance — Snake Bite-Input-Output
 ![Snake Bite AI Response](./assets/snake-bite-ai.png)
 
 ### 🏥 Nearby Hospitals
